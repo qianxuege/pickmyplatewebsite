@@ -1,10 +1,763 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PickMyPlate</title>
+    <style>
+      :root {
+        --bg: #0f1325;
+        --bg-soft: #171c33;
+        --panel: rgba(255, 255, 255, 0.07);
+        --panel-strong: rgba(255, 255, 255, 0.12);
+        --line: rgba(255, 255, 255, 0.12);
+        --text: #f6f3ee;
+        --muted: #b9bfd2;
+        --brand: #ff6a3a;
+        --brand-soft: #ff8b66;
+        --paper: #fff8f2;
+        --ink: #121a2f;
+        --ink-soft: #58627c;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Avenir Next", "Helvetica Neue", "Segoe UI", sans-serif;
+        color: var(--text);
+        background:
+          radial-gradient(circle at 20% 20%, rgba(255, 106, 58, 0.28), transparent 22%),
+          radial-gradient(circle at 80% 15%, rgba(255, 255, 255, 0.08), transparent 18%),
+          radial-gradient(circle at 72% 60%, rgba(255, 106, 58, 0.18), transparent 24%),
+          linear-gradient(180deg, #0a0f1f 0%, var(--bg) 42%, #14192d 100%);
+      }
+
+      a {
+        color: inherit;
+      }
+
+      .page {
+        width: min(1200px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: 28px 0 40px;
+      }
+
+      .hero {
+        position: relative;
+        overflow: hidden;
+        min-height: 92vh;
+        padding: 28px 34px 40px;
+        border: 1px solid var(--line);
+        border-radius: 36px;
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02)),
+          rgba(10, 14, 28, 0.74);
+        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.38);
+      }
+
+      .hero::before,
+      .hero::after {
+        content: "";
+        position: absolute;
+        inset: auto;
+        border-radius: 999px;
+        filter: blur(16px);
+        pointer-events: none;
+      }
+
+      .hero::before {
+        top: 90px;
+        right: -60px;
+        width: 240px;
+        height: 240px;
+        background: rgba(255, 106, 58, 0.3);
+      }
+
+      .hero::after {
+        left: -100px;
+        bottom: 120px;
+        width: 280px;
+        height: 280px;
+        background: rgba(255, 255, 255, 0.08);
+      }
+
+      .nav {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+      }
+
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 800;
+        letter-spacing: -0.04em;
+      }
+
+      .brand-mark {
+        width: 16px;
+        height: 16px;
+        border-radius: 5px;
+        background: linear-gradient(135deg, #ffd4c8 0%, var(--brand) 100%);
+        box-shadow: 0 0 24px rgba(255, 106, 58, 0.65);
+      }
+
+      .brand-name {
+        font-size: 1.25rem;
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 22px;
+        color: var(--muted);
+      }
+
+      .nav-links a {
+        text-decoration: none;
+        font-weight: 600;
+      }
+
+      .nav-action {
+        padding: 12px 18px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.05);
+        color: #fff;
+      }
+
+      .hero-grid {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        grid-template-columns: minmax(0, 1.1fr) minmax(360px, 0.9fr);
+        gap: 28px;
+        align-items: center;
+        padding-top: 84px;
+      }
+
+      .eyebrow {
+        margin: 0 0 18px;
+        color: var(--brand-soft);
+        font-size: 0.84rem;
+        font-weight: 700;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+      }
+
+      .headline {
+        margin: 0;
+        max-width: 10ch;
+        font-size: clamp(3.7rem, 8vw, 6.4rem);
+        line-height: 0.92;
+        letter-spacing: -0.07em;
+      }
+
+      .headline span {
+        color: var(--brand);
+      }
+
+      .subhead {
+        max-width: 34rem;
+        margin: 24px 0 0;
+        color: var(--muted);
+        font-size: clamp(1rem, 2vw, 1.18rem);
+        line-height: 1.75;
+      }
+
+      .cta-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        margin-top: 34px;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 170px;
+        padding: 15px 24px;
+        border-radius: 999px;
+        text-decoration: none;
+        font-weight: 700;
+        transition: transform 180ms ease, background 180ms ease;
+      }
+
+      .btn:hover {
+        transform: translateY(-1px);
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, var(--brand) 0%, #ff8758 100%);
+        color: #fff;
+        box-shadow: 0 18px 40px rgba(255, 106, 58, 0.28);
+      }
+
+      .btn-secondary {
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        background: rgba(255, 255, 255, 0.04);
+        color: #fff;
+      }
+
+      .stats {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 24px;
+        margin-top: 34px;
+      }
+
+      .stat {
+        min-width: 120px;
+      }
+
+      .stat strong {
+        display: block;
+        font-size: 1.5rem;
+        letter-spacing: -0.05em;
+      }
+
+      .stat span {
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+
+      .visual {
+        position: relative;
+        min-height: 560px;
+      }
+
+      .orbital {
+        position: absolute;
+        inset: 12% 10% auto auto;
+        width: 420px;
+        height: 420px;
+        border-radius: 50%;
+        background:
+          radial-gradient(circle at 50% 50%, rgba(255, 106, 58, 0.3), transparent 48%),
+          radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.09), transparent 62%);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+      }
+
+      .ring,
+      .ring::before,
+      .ring::after {
+        position: absolute;
+        border-radius: 50%;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        content: "";
+      }
+
+      .ring {
+        inset: 10%;
+      }
+
+      .ring::before {
+        inset: 12%;
+      }
+
+      .ring::after {
+        inset: 26%;
+      }
+
+      .phone {
+        position: absolute;
+        top: 44px;
+        right: 18px;
+        width: min(100%, 360px);
+        padding: 18px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 34px;
+        background: linear-gradient(180deg, rgba(24, 28, 49, 0.96), rgba(12, 15, 30, 0.98));
+        box-shadow: 0 26px 60px rgba(0, 0, 0, 0.4);
+      }
+
+      .screen {
+        padding: 22px;
+        border-radius: 26px;
+        background:
+          radial-gradient(circle at top right, rgba(255, 106, 58, 0.22), transparent 28%),
+          linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+      }
+
+      .screen-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: var(--muted);
+        font-size: 0.88rem;
+      }
+
+      .screen-title {
+        margin: 22px 0 10px;
+        font-size: 2rem;
+        letter-spacing: -0.05em;
+      }
+
+      .screen-copy {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
+      .pill-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 20px;
+      }
+
+      .pill {
+        padding: 9px 12px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.08);
+        color: #fff;
+        font-size: 0.9rem;
+      }
+
+      .menu-card {
+        margin-top: 24px;
+        padding: 18px;
+        border-radius: 24px;
+        background: rgba(255, 248, 242, 0.98);
+        color: var(--ink);
+      }
+
+      .menu-card h3 {
+        margin: 0 0 8px;
+        font-size: 1.15rem;
+      }
+
+      .menu-copy {
+        margin: 0;
+        color: var(--ink-soft);
+        line-height: 1.55;
+      }
+
+      .menu-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-top: 18px;
+      }
+
+      .menu-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--brand);
+        font-weight: 700;
+      }
+
+      .dot {
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: var(--brand);
+      }
+
+      .float-card {
+        position: absolute;
+        padding: 16px 18px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 22px;
+        background: rgba(255, 255, 255, 0.06);
+        backdrop-filter: blur(12px);
+        box-shadow: 0 18px 32px rgba(0, 0, 0, 0.18);
+      }
+
+      .float-card strong {
+        display: block;
+        margin-bottom: 6px;
+        font-size: 0.96rem;
+      }
+
+      .float-card span {
+        color: var(--muted);
+        font-size: 0.92rem;
+        line-height: 1.45;
+      }
+
+      .float-left {
+        left: 0;
+        bottom: 88px;
+        width: 220px;
+      }
+
+      .float-right {
+        right: 6px;
+        bottom: 8px;
+        width: 210px;
+      }
+
+      .content {
+        padding: 96px 8px 24px;
+      }
+
+      .section-head {
+        display: grid;
+        grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+        gap: 24px;
+        align-items: start;
+        margin-bottom: 32px;
+      }
+
+      .kicker {
+        margin: 0 0 14px;
+        color: var(--brand);
+        font-size: 0.86rem;
+        font-weight: 700;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+
+      .section-title {
+        margin: 0;
+        color: #fff;
+        font-size: clamp(2.2rem, 5vw, 4rem);
+        line-height: 0.98;
+        letter-spacing: -0.06em;
+      }
+
+      .section-text {
+        margin: 0;
+        color: var(--muted);
+        font-size: 1.05rem;
+        line-height: 1.9;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 18px;
+      }
+
+      .card {
+        min-height: 250px;
+        padding: 26px;
+        border: 1px solid rgba(255, 255, 255, 0.09);
+        border-radius: 28px;
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.03));
+      }
+
+      .card-number {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 44px;
+        height: 44px;
+        border-radius: 14px;
+        background: rgba(255, 106, 58, 0.12);
+        color: var(--brand);
+        font-weight: 800;
+      }
+
+      .card h3 {
+        margin: 22px 0 12px;
+        color: #fff;
+        font-size: 1.3rem;
+      }
+
+      .card p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.75;
+      }
+
+      .cta-panel {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 20px;
+        align-items: center;
+        margin-top: 24px;
+        padding: 28px;
+        border: 1px solid rgba(255, 255, 255, 0.09);
+        border-radius: 30px;
+        background:
+          radial-gradient(circle at right top, rgba(255, 106, 58, 0.25), transparent 26%),
+          linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.03));
+      }
+
+      .cta-panel h3 {
+        margin: 0 0 10px;
+        font-size: 1.8rem;
+        letter-spacing: -0.04em;
+      }
+
+      .cta-panel p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.7;
+      }
+
+      @media (max-width: 1020px) {
+        .hero-grid,
+        .section-head,
+        .grid,
+        .cta-panel {
+          grid-template-columns: 1fr;
+        }
+
+        .visual {
+          min-height: 680px;
+        }
+
+        .orbital {
+          left: 50%;
+          right: auto;
+          transform: translateX(-50%);
+        }
+
+        .phone {
+          right: 50%;
+          transform: translateX(50%);
+        }
+
+        .float-left {
+          left: 10px;
+        }
+
+        .float-right {
+          right: 10px;
+        }
+      }
+
+      @media (max-width: 720px) {
+        .page {
+          width: min(100% - 16px, 100%);
+          padding-top: 8px;
+        }
+
+        .hero {
+          min-height: auto;
+          padding: 22px 18px 28px;
+          border-radius: 28px;
+        }
+
+        .nav {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .nav-links {
+          flex-wrap: wrap;
+          gap: 12px 18px;
+        }
+
+        .hero-grid {
+          padding-top: 42px;
+        }
+
+        .headline {
+          font-size: clamp(3rem, 16vw, 4.4rem);
+        }
+
+        .visual {
+          min-height: 600px;
+        }
+
+        .orbital {
+          width: 320px;
+          height: 320px;
+          top: 60px;
+        }
+
+        .phone {
+          top: 24px;
+          width: calc(100% - 12px);
+          transform: none;
+          right: 6px;
+        }
+
+        .float-left,
+        .float-right {
+          position: relative;
+          width: 100%;
+          left: auto;
+          right: auto;
+          bottom: auto;
+          margin-top: 14px;
+        }
+
+        .cta-row .btn,
+        .cta-panel .btn {
+          width: 100%;
+        }
+
+        .content {
+          padding-top: 68px;
+        }
+      }
+    </style>
   </head>
   <body>
-    <h1>Welcome to PickMyPlate 🍽️</h1>
-    <p>Smarter restaurant ordering.</p>
+    <main class="page">
+      <section class="hero">
+        <nav class="nav">
+          <div class="brand">
+            <span class="brand-mark"></span>
+            <span class="brand-name">PickMyPlate</span>
+          </div>
+
+          <div class="nav-links">
+            <a href="#about">About</a>
+            <a href="#features">Features</a>
+            <a href="#join" class="nav-action">Get Started</a>
+          </div>
+        </nav>
+
+        <div class="hero-grid">
+          <div>
+            <p class="eyebrow">Menu discovery, made magnetic</p>
+            <h1 class="headline">
+              Find your next <span>favorite plate</span> before the table even arrives.
+            </h1>
+            <p class="subhead">
+              PickMyPlate is a restaurant discovery and menu management app that helps
+              customers explore dishes faster and gives restaurants a more polished way
+              to showcase what they serve.
+            </p>
+
+            <div class="cta-row">
+              <a class="btn btn-primary" href="#join">Try PickMyPlate</a>
+              <a class="btn btn-secondary" href="#about">See what it does</a>
+            </div>
+
+            <div class="stats">
+              <div class="stat">
+                <strong>Slogan</strong>
+                <span>Your perfect meal starts here.</span>
+              </div>
+              <div class="stat">
+                <strong>Catch phrase</strong>
+                <span>Fresh choices. Zero guesswork.</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="visual" aria-hidden="true">
+            <div class="orbital">
+              <div class="ring"></div>
+            </div>
+
+            <div class="phone">
+              <div class="screen">
+                <div class="screen-top">
+                  <span>PickMyPlate</span>
+                  <span>Live Menu View</span>
+                </div>
+
+                <h2 class="screen-title">Tonight’s best bites, instantly.</h2>
+                <p class="screen-copy">
+                  Browse menus, compare dishes, and help restaurants present every plate
+                  with more clarity and style.
+                </p>
+
+                <div class="pill-grid">
+                  <span class="pill">Browse menus</span>
+                  <span class="pill">Spot signatures</span>
+                  <span class="pill">Update items</span>
+                  <span class="pill">Boost visibility</span>
+                </div>
+
+                <div class="menu-card">
+                  <h3>Why the app works</h3>
+                  <p class="menu-copy">
+                    Diners stop guessing. Restaurants stop hiding great dishes behind
+                    outdated, hard-to-read menus.
+                  </p>
+
+                  <div class="menu-row">
+                    <div class="menu-tag">
+                      <span class="dot"></span>
+                      Cleaner discovery
+                    </div>
+                    <strong>Fast decisions</strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="float-card float-left">
+              <strong>For customers</strong>
+              <span>See what is actually worth ordering before you commit.</span>
+            </div>
+
+            <div class="float-card float-right">
+              <strong>For restaurants</strong>
+              <span>Present menus in a format that feels current and easy to manage.</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="content" id="about">
+        <div class="section-head">
+          <div>
+            <p class="kicker">What PickMyPlate Is</p>
+            <h2 class="section-title">A call-to-action landing page with sharper visual direction.</h2>
+          </div>
+          <p class="section-text">
+            The redesign takes cues from Brain.fm’s dramatic composition: strong contrast,
+            oversized headline, layered depth, and focused messaging. For PickMyPlate,
+            that same structure is translated into an orange-led brand experience centered
+            on menu exploration, restaurant presentation, and quick decision-making.
+          </p>
+        </div>
+
+        <div class="grid" id="features">
+          <article class="card">
+            <span class="card-number">01</span>
+            <h3>Explore menus faster</h3>
+            <p>
+              Customers can scan restaurant offerings without the clutter and uncertainty
+              that usually slows down ordering.
+            </p>
+          </article>
+
+          <article class="card">
+            <span class="card-number">02</span>
+            <h3>Showcase dishes better</h3>
+            <p>
+              Restaurants get a cleaner, more attractive way to present meals, specials,
+              and standout items.
+            </p>
+          </article>
+
+          <article class="card">
+            <span class="card-number">03</span>
+            <h3>Turn browsing into action</h3>
+            <p>
+              The page is built around one clear CTA so visitors understand the product
+              quickly and know what to do next.
+            </p>
+          </article>
+        </div>
+
+        <div class="cta-panel" id="join">
+          <div>
+            <h3>Ready to make every menu easier to choose from?</h3>
+            <p>
+              PickMyPlate helps people discover what to order and helps restaurants make
+              their food look worth clicking.
+            </p>
+          </div>
+          <a class="btn btn-primary" href="mailto:hello@pickmyplate.com">Join PickMyPlate</a>
+        </div>
+      </section>
+    </main>
   </body>
 </html>
