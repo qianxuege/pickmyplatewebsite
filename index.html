@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta
       name="description"
       content="PickMyPlate — scan menus, filter by diet and taste, and order with confidence. Starting in Oakland, for all of Pittsburgh."
@@ -54,17 +54,20 @@
 
       html {
         scroll-behavior: smooth;
-        scroll-padding-top: calc(var(--header-height) + 0.5rem);
+        scroll-padding-top: calc(var(--header-height) + env(safe-area-inset-top, 0px) + 0.5rem);
         width: 100%;
         margin: 0;
         padding: 0;
+        overflow-x: clip;
       }
 
       body {
         margin: 0;
         padding: 0;
+        padding-left: env(safe-area-inset-left, 0px);
+        padding-right: env(safe-area-inset-right, 0px);
         width: 100%;
-        overflow-x: hidden;
+        overflow-x: visible;
         display: flex;
         flex-direction: column;
         align-items: stretch;
@@ -120,6 +123,7 @@
         position: sticky;
         top: 0;
         z-index: 50;
+        padding-top: env(safe-area-inset-top, 0px);
         background: rgba(255, 255, 255, 0.92);
         backdrop-filter: blur(10px);
         border-bottom: 1px solid var(--line);
@@ -234,8 +238,28 @@
 
       .menu-toggle {
         display: none;
-        font-size: 0.9375rem;
-        font-weight: 600;
+        color: var(--primary);
+        border: none;
+        background: none;
+        cursor: pointer;
+        font-family: inherit;
+        padding: 0;
+      }
+
+      .menu-toggle:hover {
+        opacity: 0.75;
+      }
+
+      .menu-toggle:focus-visible {
+        outline: 2px solid var(--primary);
+        outline-offset: 3px;
+        border-radius: 6px;
+      }
+
+      .menu-toggle-icon {
+        display: block;
+        width: 1.5rem;
+        height: 1.5rem;
       }
 
       @media (max-width: 900px) {
@@ -245,7 +269,12 @@
         }
 
         .menu-toggle {
-          display: inline-block;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          min-height: 44px;
+          min-width: 44px;
+          padding: 0 0.5rem;
         }
 
         .nav.is-open .nav-mobile {
@@ -283,12 +312,27 @@
         font-size: 1rem;
       }
 
-      .nav-mobile .btn-dark {
-        margin: 0.5rem 16px 0;
-        width: calc(100% - 32px);
-        text-align: center;
+      .nav-mobile .btn.btn-mobile-download {
+        align-self: flex-start;
+        margin: 0.5rem 24px 0;
+        width: auto;
+        max-width: calc(100% - 48px);
+        text-align: left;
+        justify-content: flex-start;
         border-radius: var(--radius-pill);
-        padding: 0.75rem 1.25rem;
+        padding: 0.7rem 1.2rem;
+        font-weight: 600;
+        font-size: 0.9375rem;
+        text-decoration: none;
+        color: var(--accent);
+        background: rgba(233, 83, 3, 0.08);
+        border: 2px solid var(--accent);
+        box-shadow: none;
+      }
+
+      .nav-mobile .btn.btn-mobile-download:hover {
+        background: rgba(233, 83, 3, 0.14);
+        opacity: 1;
       }
 
       .nav {
@@ -348,9 +392,9 @@
         display: flex;
         align-items: center;
         box-sizing: border-box;
-        min-height: calc(100vh - var(--header-height));
-        min-height: calc(100svh - var(--header-height));
-        min-height: calc(100dvh - var(--header-height));
+        min-height: calc(100vh - var(--header-height) - env(safe-area-inset-top, 0px));
+        min-height: calc(100svh - var(--header-height) - env(safe-area-inset-top, 0px));
+        min-height: calc(100dvh - var(--header-height) - env(safe-area-inset-top, 0px));
         padding: clamp(1.45rem, 3vw, 2.35rem) 0 clamp(2rem, 5vw, 3.25rem);
       }
 
@@ -765,7 +809,7 @@
         }
       }
 
-      @media (max-width: 768px) {
+      @media (max-width: 900px) {
         .card-grid-3 {
           grid-template-columns: 1fr;
         }
@@ -963,7 +1007,7 @@
         line-height: 1.65;
       }
 
-      @media (max-width: 768px) {
+      @media (max-width: 900px) {
         .steps-flow {
           flex-direction: column;
           align-items: stretch;
@@ -1240,6 +1284,13 @@
         font-size: 0.9375rem;
         color: var(--ink-soft);
         line-height: 1.65;
+      }
+
+      @media (max-width: 640px) {
+        .map-section .kicker-line {
+          font-size: 0.8125rem;
+          line-height: 1.6;
+        }
       }
 
       .map-stage-wrap {
@@ -2188,12 +2239,39 @@
         }
       }
 
+      @media (max-width: 480px) {
+        .download-store-row,
+        .download-open-row {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .download-store-row .btn-dark,
+        .download-open-row .btn-dark,
+        .download-open-row .btn-outline-muted {
+          width: 100%;
+          justify-content: center;
+        }
+
+        .value-prop__cta {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .value-prop__cta .btn-dark,
+        .value-prop__cta .btn-ghost-green {
+          width: 100%;
+          justify-content: center;
+        }
+      }
+
       /* —— Site footer —— */
       .site-footer {
         position: relative;
         background: var(--primary);
         color: rgba(255, 255, 255, 0.92);
-        padding: clamp(2.75rem, 6vw, 3.0rem) 0 clamp(2rem, 4vw, 2.05rem);
+        padding: clamp(2.75rem, 6vw, 3.0rem) 0
+          calc(clamp(2rem, 4vw, 2.05rem) + env(safe-area-inset-bottom, 0px));
       }
 
       .site-footer::before {
@@ -2266,8 +2344,22 @@
           <a class="link-quiet" href="#waitlist" data-email-signup>Join email list</a>
         </div>
 
-        <button type="button" class="menu-toggle link-quiet" aria-expanded="false" aria-controls="mobile-menu" id="menu-btn">
-          Menu
+        <button
+          type="button"
+          class="menu-toggle"
+          aria-expanded="false"
+          aria-controls="mobile-menu"
+          id="menu-btn"
+          aria-label="Menu"
+        >
+          <svg class="menu-toggle-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path
+              d="M5 7h14M5 12h14M5 17h14"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+            />
+          </svg>
         </button>
 
         <div class="nav-mobile" id="mobile-menu" hidden>
@@ -2275,7 +2367,7 @@
           <a href="#restaurants">How it works</a>
           <a href="#oakland">Pittsburgh</a>
           <a href="#team">Team</a>
-          <a class="btn btn-dark" href="#download">Download app</a>
+          <a class="btn btn-mobile-download" href="#download">Download app</a>
           <a class="link-quiet" href="#waitlist" data-email-signup>Join email list</a>
         </div>
       </div>
@@ -3186,8 +3278,12 @@
           });
         }
 
+        var disableWheelZoom =
+          window.matchMedia("(max-width: 640px)").matches ||
+          window.matchMedia("(pointer: coarse)").matches;
+
         var map = L.map(el, {
-          scrollWheelZoom: true,
+          scrollWheelZoom: !disableWheelZoom,
           zoomControl: true
         });
 
