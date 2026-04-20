@@ -1628,6 +1628,137 @@
         }
       }
 
+      /* —— Download (Expo Go) —— */
+      .download {
+        padding: var(--space-section) 0;
+        border-top: 1px solid var(--section-border);
+        background: var(--card);
+      }
+
+      .download-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: clamp(1.75rem, 4vw, 2.75rem);
+        align-items: start;
+        margin-top: clamp(2rem, 4vw, 2.75rem);
+        max-width: 52rem;
+      }
+
+      .download-steps {
+        margin: 0;
+        padding-left: 1.35rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1.85rem;
+        color: var(--ink-soft);
+      }
+
+      .download-steps > li {
+        padding-left: 0.35rem;
+      }
+
+      .download-steps > li::marker {
+        font-weight: 800;
+        color: var(--accent);
+      }
+
+      .download-steps strong {
+        display: block;
+        font-size: 1.0625rem;
+        font-weight: 700;
+        color: var(--primary);
+        margin-bottom: 0.4rem;
+      }
+
+      .download-steps p {
+        margin: 0 0 1rem;
+        font-size: 0.9375rem;
+        line-height: 1.55;
+        max-width: 36rem;
+      }
+
+      .download-store-row,
+      .download-open-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.65rem 0.75rem;
+        align-items: center;
+      }
+
+      .download-open-row .btn-dark {
+        box-shadow: 0 4px 18px rgba(3, 2, 19, 0.12);
+      }
+
+      .btn-outline-muted {
+        background: var(--white);
+        color: var(--primary);
+        border: 1px solid var(--line);
+      }
+
+      .btn-outline-muted:hover {
+        border-color: rgba(3, 2, 19, 0.22);
+        background: var(--white);
+        opacity: 1;
+      }
+
+      .download-qr {
+        text-align: center;
+        padding: 1.15rem 1.15rem 1.05rem;
+        background: var(--white);
+        border-radius: var(--radius-card);
+        border: 1px solid var(--line);
+        box-shadow:
+          0 1px 2px rgba(3, 2, 19, 0.04),
+          0 12px 32px rgba(3, 2, 19, 0.06);
+      }
+
+      .download-qr img {
+        display: block;
+        width: 180px;
+        height: 180px;
+        margin: 0 auto;
+      }
+
+      .download-qr-caption {
+        margin: 0.85rem 0 0;
+        font-size: 0.8125rem;
+        font-weight: 500;
+        color: var(--muted);
+        line-height: 1.45;
+        max-width: 11rem;
+        margin-inline: auto;
+      }
+
+      .download-url-note {
+        margin: clamp(1.75rem, 3vw, 2.25rem) 0 0;
+        padding-top: 1.25rem;
+        border-top: 1px solid var(--line);
+        font-size: 0.875rem;
+        color: var(--muted);
+      }
+
+      .download-url-note code {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        font-size: 0.8125rem;
+        font-weight: 500;
+        color: var(--ink-soft);
+        background: rgba(3, 2, 19, 0.06);
+        padding: 0.2rem 0.5rem;
+        border-radius: 6px;
+        word-break: break-all;
+      }
+
+      @media (max-width: 768px) {
+        .download-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .download-qr {
+          justify-self: center;
+          max-width: 240px;
+        }
+      }
+
       /* —— Footer CTA —— */
       .footer-cta {
         background: var(--primary);
@@ -2321,14 +2452,81 @@
         </div>
       </section>
 
+      <section class="download" id="download" aria-labelledby="download-heading">
+        <div class="container">
+          <p class="eyebrow">Beta access</p>
+          <h2 id="download-heading" class="section-title">Get the app with Expo Go</h2>
+          <p class="section-intro">
+            PickMyPlate runs inside
+            <a href="https://expo.dev/go" target="_blank" rel="noopener noreferrer">Expo Go</a>
+            while we&apos;re in beta. Install Expo on your phone, then open our project link (or scan the QR
+            code).
+          </p>
+
+          <div class="download-grid">
+            <ol class="download-steps">
+              <li>
+                <strong>Install Expo Go</strong>
+                <p>Download the free Expo Go app from the store on your iPhone or Android device.</p>
+                <div class="download-store-row">
+                  <a
+                    class="btn btn-dark"
+                    href="https://apps.apple.com/app/expo-go/id982107779"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    >App Store</a
+                  >
+                  <a
+                    class="btn btn-dark"
+                    href="https://play.google.com/store/apps/details?id=host.exp.exponent"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    >Google Play</a
+                  >
+                </div>
+              </li>
+              <li>
+                <strong>Open PickMyPlate</strong>
+                <p>
+                  On your phone, Scan the QR code with your camera or tap &ldquo;Open project&rdquo; below. Expo Go should launch the app. On a
+                  computer? Copy the link and paste it on your phone's browser (e.g. in Safari), which should open the app in Expo Go.
+                </p>
+                <div class="download-open-row">
+                  <a class="btn btn-dark" href="exp://34.72.65.73:8081">Open project in Expo Go</a>
+                  <button type="button" class="btn btn-outline-muted" id="copy-exp-link">
+                    Copy project link
+                  </button>
+                </div>
+              </li>
+            </ol>
+            <div class="download-qr">
+              <img
+                src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&amp;data=exp%3A%2F%2F34.72.65.73%3A8081"
+                width="180"
+                height="180"
+                alt="QR code: scan to open exp://34.72.65.73:8081 in Expo Go."
+                loading="lazy"
+                decoding="async"
+              />
+              <p class="download-qr-caption">Scan with your phone camera, then open in Expo Go.</p>
+            </div>
+          </div>
+
+          <p class="download-url-note">
+            Project URL:
+            <code>exp://34.72.65.73:8081</code>
+          </p>
+        </div>
+      </section>
+
       <footer class="footer-cta" id="waitlist">
         <div class="container footer-cta-inner">
           <h2>Pick faster, stress less, and enjoy the plate you actually wanted.</h2>
           <p class="fineprint">
             Know what fits your diet, allergies, and taste—before you say a word to the server. 
           </p>
-          <div class="btn-row" id="download">
-            <a class="btn btn-footer-primary" href="#">Download the app</a>
+          <div class="btn-row">
+            <a class="btn btn-footer-primary" href="#download">Get the app</a>
             <a class="btn btn-outline-light" href="#waitlist" data-email-signup>Join our email list</a>
           </div>
         </div>
@@ -2358,6 +2556,40 @@
             a.rel = "noopener noreferrer";
           });
         }
+      })();
+
+      (function () {
+        var btn = document.getElementById("copy-exp-link");
+        var url = "exp://34.72.65.73:8081";
+        if (!btn) return;
+        var label = btn.textContent.trim();
+        btn.addEventListener("click", function () {
+          function done() {
+            btn.textContent = "Copied!";
+            setTimeout(function () {
+              btn.textContent = label;
+            }, 2000);
+          }
+          function fallback() {
+            var ta = document.createElement("textarea");
+            ta.value = url;
+            ta.setAttribute("readonly", "");
+            ta.style.position = "fixed";
+            ta.style.left = "-9999px";
+            document.body.appendChild(ta);
+            ta.select();
+            try {
+              document.execCommand("copy");
+              done();
+            } catch (e) {}
+            document.body.removeChild(ta);
+          }
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(url).then(done).catch(fallback);
+          } else {
+            fallback();
+          }
+        });
       })();
 
       (function () {
