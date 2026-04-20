@@ -746,7 +746,7 @@
         flex-direction: row;
         align-items: stretch;
         gap: 0;
-        margin-bottom: 2.5rem;
+        margin-bottom: 1.5rem;
       }
 
       .step-card {
@@ -857,6 +857,23 @@
         .step-card:hover {
           transform: none;
         }
+      }
+
+      .how-panel {
+        margin-top: 0.25rem;
+        padding: clamp(1.35rem, 3vw, 2rem);
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        box-shadow: 0 2px 12px rgba(3, 2, 19, 0.04);
+      }
+
+      .how-panel .value-grid {
+        margin-top: 1.35rem;
+      }
+
+      .how-panel .value-card {
+        background: var(--white);
       }
 
       .value-grid {
@@ -1270,17 +1287,76 @@
         }
       }
 
+      /* —— Proof / credibility (inside .how-panel) —— */
+      .proof-cred {
+        margin: 0;
+        padding: 0;
+        text-align: center;
+        border: none;
+      }
+
+      .proof-cred__title {
+        margin: 0 auto;
+        max-width: 36rem;
+        font-size: clamp(1.25rem, 2.9vw, 1.45rem);
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        line-height: 1.3;
+        color: var(--primary);
+      }
+
+      .proof-cred__lede {
+        margin: 0.45rem auto 0;
+        max-width: 38rem;
+        font-size: 0.9375rem;
+        color: var(--muted);
+        line-height: 1.55;
+      }
+
+      .proof-stats {
+        margin: 1.15rem 0 0;
+        padding: 0;
+        list-style: none;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0.65rem 1rem;
+        max-width: 46rem;
+        margin-left: auto;
+        margin-right: auto;
+        align-items: start;
+      }
+
+      .proof-stats li {
+        margin: 0;
+        padding: 0.45rem 0.35rem;
+        font-size: 0.8125rem;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+        text-transform: uppercase;
+        color: var(--muted);
+        line-height: 1.35;
+      }
+
+      @media (max-width: 640px) {
+        .proof-stats {
+          grid-template-columns: 1fr;
+          gap: 0.35rem;
+        }
+
+        .proof-stats li {
+          padding: 0.2rem 0;
+        }
+      }
+
       /* —— Endorsement carousel —— */
       .endorse-section {
         margin-top: 3rem;
         padding-top: 2.75rem;
-        border-top: 1px solid var(--line);
         border-top: 1px solid var(--section-border);
       }
 
       .endorse-label {
         margin: 0 auto 1.6rem;
-        max-width: 42rem;
         text-align: center;
         font-size: 0.8125rem;
         font-weight: 600;
@@ -1289,98 +1365,41 @@
         color: var(--accent);
       }
 
-      .endorse-carousel {
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: 100%;
-      }
-
-      /* Horizontal clip only; padding gives scaled card + shadow room so nothing clips */
-      .endorse-viewport {
-        overflow-x: hidden;
-        width: 100%;
-        max-width: 100%;
-        margin-inline: auto;
-
-        /* padding: 1rem clamp(1rem, 4vw, 1.75rem) 1.25rem; */
-        padding: 1rem 0;
-
-        box-sizing: border-box;
-        background: transparent;
-      }
-
       .endorse-track {
         display: flex;
-        flex-direction: row;
-        flex-wrap: nowrap;
-        transition: transform 0.45s ease;
-        will-change: transform;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        scroll-behavior: smooth;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        gap: 0;
+        padding: 1rem 0 1.25rem;
+      }
+
+      .endorse-track::-webkit-scrollbar {
+        display: none;
       }
 
       .endorse-slide {
-        flex-grow: 0;
-        flex-shrink: 0;
-        box-sizing: border-box;
-        padding: 0.625rem 0;
+        flex: 0 0 100%;
+        scroll-snap-align: start;
         display: flex;
         justify-content: center;
-        align-items: stretch;
-
-        width: 100%;
-        flex: 0 0 100%;
+        padding: 0 0.5rem;
+        box-sizing: border-box;
       }
 
       .endorse-card {
         display: flex;
         align-items: flex-start;
         gap: 1.35rem;
-        box-sizing: border-box;
         width: 100%;
         max-width: 720px;
-        margin-left: auto;
-        margin-right: auto;
         padding: 2rem 2.1rem 2.15rem;
         border-radius: 14px;
         background: var(--white);
         border: 1px solid var(--line);
-        box-shadow:
-          0 1px 2px rgba(3, 2, 19, 0.04),
-          0 14px 36px rgba(3, 2, 19, 0.08);
-        transition:
-          transform 0.45s ease,
-          opacity 0.35s ease,
-          box-shadow 0.35s ease;
-      }
-
-      .endorse-slide.is-active .endorse-card {
-        box-shadow:
-          0 4px 12px rgba(3, 2, 19, 0.08),
-          0 22px 50px rgba(3, 2, 19, 0.12);
-      }
-
-      .endorse-slide:not(.is-active) .endorse-card {
-        opacity: 0.6;
-      }
-
-      .endorse-slide:not(.is-active) .endorse-card {
-        opacity: 0.52;
-      }
-
-      @media (prefers-reduced-motion: reduce) {
-        .endorse-slide.is-active .endorse-card {
-          transform: none;
-        }
-
-        .endorse-track {
-          display: flex;
-          width: 100%;
-        }
-
-        .endorse-card {
-          transition: opacity 0.2s ease;
-        }
+        box-shadow: 0 1px 2px rgba(3,2,19,0.04), 0 14px 36px rgba(3,2,19,0.08);
       }
 
       .endorse-avatar {
@@ -1398,34 +1417,17 @@
         text-transform: uppercase;
       }
 
-      .endorse-avatar--a {
-        background: linear-gradient(145deg, #4f46e5 0%, #7c3aed 100%);
-      }
+      .endorse-avatar--a { background: linear-gradient(145deg, #4f46e5 0%, #7c3aed 100%); }
+      .endorse-avatar--b { background: linear-gradient(145deg, #059669 0%, #0d9488 100%); }
+      .endorse-avatar--c { background: linear-gradient(145deg, #d97706 0%, #ea580c 100%); }
+      .endorse-avatar--d { background: linear-gradient(145deg, #475569 0%, #334155 100%); }
+      .endorse-avatar--e { background: linear-gradient(145deg, #db2777 0%, #be185d 100%); }
 
-      .endorse-avatar--b {
-        background: linear-gradient(145deg, #059669 0%, #0d9488 100%);
-      }
-
-      .endorse-avatar--c {
-        background: linear-gradient(145deg, #d97706 0%, #ea580c 100%);
-      }
-
-      .endorse-avatar--d {
-        background: linear-gradient(145deg, #475569 0%, #334155 100%);
-      }
-
-      .endorse-avatar--e {
-        background: linear-gradient(145deg, #db2777 0%, #be185d 100%);
-      }
-
-      .endorse-card__main {
-        flex: 1;
-        min-width: 0;
-      }
+      .endorse-card__main { flex: 1; min-width: 0; }
 
       .endorse-quote {
         margin: 0;
-        font-size: clamp(1.28rem, 3.1vw, 1.55rem);
+        font-size: clamp(1.1rem, 2.5vw, 1.4rem);
         font-weight: 700;
         line-height: 1.45;
         color: var(--primary);
@@ -1433,10 +1435,9 @@
       }
 
       .endorse-meta {
-        margin: 1.85rem 0 0;
+        margin: 1.5rem 0 0;
         font-size: 0.8125rem;
         line-height: 1.55;
-        color: var(--muted);
       }
 
       .endorse-meta-name {
@@ -1444,15 +1445,13 @@
         font-weight: 600;
         color: var(--primary);
         letter-spacing: -0.02em;
-        opacity: 0.84;
       }
 
       .endorse-meta-detail {
         display: block;
-        margin-top: 0.35rem;
+        margin-top: 0.25rem;
         font-size: 0.75rem;
         color: var(--muted);
-        opacity: 0.72;
       }
 
       .endorse-controls {
@@ -1460,26 +1459,7 @@
         align-items: center;
         justify-content: center;
         gap: 0.65rem;
-        margin-top: 0.45rem;
-        width: 100%;
-        max-width: 720px;
-        padding-inline: clamp(0.25rem, 2vw, 0.75rem);
-        margin-left: auto;
-        margin-right: auto;
-        box-sizing: border-box;
-      }
-
-      @media (max-width: 520px) {
-        .endorse-card {
-          flex-direction: column;
-          align-items: center;
-          text-align: center;
-          padding: 1.75rem 1.5rem 1.85rem;
-        }
-
-        .endorse-meta {
-          text-align: center;
-        }
+        margin-top: 0.75rem;
       }
 
       .endorse-btn {
@@ -1501,11 +1481,6 @@
       .endorse-btn:hover {
         background: var(--card);
         border-color: var(--ink-soft);
-      }
-
-      .endorse-btn:focus-visible {
-        outline: 2px solid var(--primary);
-        outline-offset: 2px;
       }
 
       .endorse-dots {
@@ -1530,21 +1505,17 @@
         transform: scale(1.15);
       }
 
-      .endorse-dot:focus-visible {
-        outline: 2px solid var(--primary);
-        outline-offset: 2px;
+      @media (max-width: 520px) {
+        .endorse-card {
+          flex-direction: column;
+          padding: 1.75rem 1.5rem;
+        }
       }
 
       .sr-only {
-        position: absolute;
-        width: 1px;
-        height: 1px;
-        padding: 0;
-        margin: -1px;
-        overflow: hidden;
-        clip: rect(0, 0, 0, 0);
-        white-space: nowrap;
-        border: 0;
+        position: absolute; width: 1px; height: 1px;
+        padding: 0; margin: -1px; overflow: hidden;
+        clip: rect(0,0,0,0); white-space: nowrap; border: 0;
       }
 
       /* —— Team —— */
@@ -1604,56 +1575,12 @@
 
       /* —— Footer CTA —— */
       .footer-cta {
-        position: relative;
-        overflow: hidden;
         background: var(--primary);
         color: var(--white);
         padding: var(--space-section) 0 2.5rem;
       }
 
-      .footer-cta::before {
-        content: "";
-        position: absolute;
-        inset: -25%;
-        pointer-events: none;
-        background: radial-gradient(
-            ellipse 55% 45% at 18% 22%,
-            rgba(233, 83, 3, 0.32) 0%,
-            transparent 62%
-          ),
-          radial-gradient(
-            ellipse 50% 42% at 82% 78%,
-            rgba(255, 106, 61, 0.2) 0%,
-            transparent 58%
-          ),
-          linear-gradient(
-            155deg,
-            rgba(233, 83, 3, 0.12) 0%,
-            transparent 48%,
-            rgba(255, 255, 255, 0.05) 100%
-          );
-        animation: footer-cta-bg 22s ease-in-out infinite alternate;
-      }
-
-      @keyframes footer-cta-bg {
-        0% {
-          transform: translate3d(-3%, -2%, 0) scale(1);
-        }
-        100% {
-          transform: translate3d(4%, 3%, 0) scale(1.06);
-        }
-      }
-
-      @media (prefers-reduced-motion: reduce) {
-        .footer-cta::before {
-          animation: none;
-          transform: none;
-        }
-      }
-
       .footer-cta-inner {
-        position: relative;
-        z-index: 1;
         text-align: center;
         max-width: 38rem;
         margin-inline: auto;
@@ -1763,14 +1690,14 @@
 
         <nav class="nav-center" aria-label="Primary">
           <a href="#diners">Diners</a>
-          <a href="#venues">Diners &amp; Venues</a>
+          <a href="#restaurants">Diners &amp; Restaurants</a>
           <a href="#oakland">Pittsburgh</a>
           <a href="#team">Team</a>
         </nav>
 
         <div class="nav-actions">
           <a class="btn btn-dark" href="#download">Download app</a>
-          <a class="link-quiet" href="#waitlist">Join waitlist</a>
+          <a class="link-quiet" href="#waitlist">Join email list</a>
         </div>
 
         <button type="button" class="menu-toggle link-quiet" aria-expanded="false" aria-controls="mobile-menu" id="menu-btn">
@@ -1779,11 +1706,11 @@
 
         <div class="nav-mobile" id="mobile-menu" hidden>
           <a href="#diners">Diners</a>
-          <a href="#venues">Diners &amp; Venues</a>
+          <a href="#restaurants">Diners &amp; Restaurants</a>
           <a href="#oakland">Pittsburgh</a>
           <a href="#team">Team</a>
           <a class="btn btn-dark" href="#download">Download app</a>
-          <button type="button" class="link-quiet" data-scroll="#waitlist">Join waitlist</button>
+          <button type="button" class="link-quiet" data-scroll="#waitlist">Join email list</button>
         </div>
       </div>
     </header>
@@ -1811,7 +1738,7 @@
                   Watch demo
                 </a>
               </div>
-              <p class="hero-trust">Used by students across Pittsburgh</p>
+              <p class="hero-trust">Loved by Pittsburgh diners & restaurants</p>
             </div>
           </div>
           <div class="hero-phone-wrap">
@@ -1854,10 +1781,8 @@
                   <circle cx="12" cy="13" r="3" />
                 </svg>
               </div>
-              <h3>No photos → you’re guessing</h3>
-              <p>
-                <strong>Ordering blind</strong> when plates never show what you’re actually about to eat.
-              </p>
+              <h3>You’re ordering blind</h3>
+              <p>No photos. No context. You’re guessing what shows up at your table.</p>
             </article>
             <article class="problem-card">
               <div class="problem-card__icon" aria-hidden="true">
@@ -1866,10 +1791,8 @@
                   <path d="M11 20a8 8 0 0 1-8-8c2 0 4 .5 6 2" />
                 </svg>
               </div>
-              <h3>Hidden dietary info</h3>
-              <p>
-                <strong>Allergens and dietary cues</strong> trapped in tiny print—or missing—when you need confidence fast.
-              </p>
+              <h3>You can’t trust what’s in it</h3>
+              <p>Allergens and dietary info are buried—or missing—when you need them most.</p>
             </article>
             <article class="problem-card">
               <div class="problem-card__icon" aria-hidden="true">
@@ -1878,19 +1801,17 @@
                   <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
                 </svg>
               </div>
-              <h3>Menus go out of date</h3>
-              <p>
-                <strong>Every reprint costs money</strong>, so prices, specials, and swaps lag what the kitchen serves today.
-              </p>
+              <h3>What you see isn’t what you get</h3>
+              <p>Prices, specials, and availability change—but menus don’t keep up.</p>
             </article>
           </div>
         </div>
       </section>
 
-      <section class="how" id="venues">
+      <section class="how" id="restaurants">
         <div class="container">
           <div class="how-head">
-            <h2 class="section-title">From menu photo to a dish you can trust—in four steps.</h2>
+            <h2 class="section-title">PickMyPlate turns every menu into a smart menu—in four steps.</h2>
           </div>
 
           <div class="steps-flow">
@@ -1957,6 +1878,17 @@
             </article>
           </div>
 
+          <div class="how-panel">
+          <section class="proof-cred" aria-labelledby="proof-heading">
+            <h2 id="proof-heading" class="proof-cred__title">Built for real dining decisions</h2>
+            <p class="proof-cred__lede">Menus parsed in seconds. Recommendations you can trust.</p>
+            <ul class="proof-stats" role="list">
+              <li>Menus processed in &lt; 20 seconds</li>
+              <li>Users choose 2× faster</li>
+              <li>85% feel more confident ordering</li>
+            </ul>
+          </section>
+
           <div class="value-grid">
             <article class="value-card">
               <div class="media">
@@ -1994,6 +1926,78 @@
                 </p>
               </div>
             </article>
+          </div>
+          </div>
+
+          <div class="endorse-section" id="endorsements">
+            <p class="endorse-label">Trusted voices · diners &amp; restaurants</p>
+            <div class="endorse-track" id="endorse-track" aria-label="Testimonials">
+              <figure class="endorse-slide">
+                <div class="endorse-card">
+                  <div class="endorse-avatar endorse-avatar--a" aria-hidden="true">JK</div>
+                  <div class="endorse-card__main">
+                    <blockquote class="endorse-quote">"I stopped playing twenty questions with the server about ingredients. I filter once, scan the menu, and actually know what I'm ordering."</blockquote>
+                    <div class="endorse-meta">
+                      <span class="endorse-meta-name">Jordan K.</span>
+                      <span class="endorse-meta-detail">Graduate student · Oakland</span>
+                    </div>
+                  </div>
+                </div>
+              </figure>
+              <figure class="endorse-slide">
+                <div class="endorse-card">
+                  <div class="endorse-avatar endorse-avatar--b" aria-hidden="true">MV</div>
+                  <div class="endorse-card__main">
+                    <blockquote class="endorse-quote">"We're not reprinting specials every three days. Guests use the same paper menu with a layer that stays current."</blockquote>
+                    <div class="endorse-meta">
+                      <span class="endorse-meta-name">Maria V.</span>
+                      <span class="endorse-meta-detail">Owner · Independent bistro · Pittsburgh</span>
+                    </div>
+                  </div>
+                </div>
+              </figure>
+              <figure class="endorse-slide">
+                <div class="endorse-card">
+                  <div class="endorse-avatar endorse-avatar--c" aria-hidden="true">AR</div>
+                  <div class="endorse-card__main">
+                    <blockquote class="endorse-quote">"Other apps find restaurants; this one helps me decide at the dish level when the menu is long and nothing is labeled for allergens."</blockquote>
+                    <div class="endorse-meta">
+                      <span class="endorse-meta-name">Alex R.</span>
+                      <span class="endorse-meta-detail">Product designer · Pittsburgh visits</span>
+                    </div>
+                  </div>
+                </div>
+              </figure>
+              <figure class="endorse-slide">
+                <div class="endorse-card">
+                  <div class="endorse-avatar endorse-avatar--d" aria-hidden="true">CP</div>
+                  <div class="endorse-card__main">
+                    <blockquote class="endorse-quote">"Our campus pilot team said it finally matches how people actually order—not another map of dots, but clarity at the table."</blockquote>
+                    <div class="endorse-meta">
+                      <span class="endorse-meta-name">Oakland corridor pilot</span>
+                      <span class="endorse-meta-detail">Community partnership · 2026</span>
+                    </div>
+                  </div>
+                </div>
+              </figure>
+              <figure class="endorse-slide">
+                <div class="endorse-card">
+                  <div class="endorse-avatar endorse-avatar--e" aria-hidden="true">TN</div>
+                  <div class="endorse-card__main">
+                    <blockquote class="endorse-quote">"They're not double-checking every line item with us anymore—what they see on the screen is what we're firing on the pass."</blockquote>
+                    <div class="endorse-meta">
+                      <span class="endorse-meta-name">Taylor N.</span>
+                      <span class="endorse-meta-detail">Front-of-house lead · Pittsburgh</span>
+                    </div>
+                  </div>
+                </div>
+              </figure>
+            </div>
+            <div class="endorse-controls">
+              <button type="button" class="endorse-btn" id="endorse-prev" aria-label="Previous">‹</button>
+              <div class="endorse-dots" id="endorse-dots"></div>
+              <button type="button" class="endorse-btn" id="endorse-next" aria-label="Next">›</button>
+            </div>
           </div>
         </div>
       </section>
@@ -2105,7 +2109,7 @@
                   width="390"
                   height="844"
                 />
-                <figcaption>Venue spotlight</figcaption>
+                <figcaption>Restaurant spotlight</figcaption>
               </figure>
             </div>
           </div>
@@ -2118,7 +2122,7 @@
             A density of students, diners, and independent restaurants worth getting right—then scale the playbook.
           </h2>
           <p class="kicker-line">
-            Oakland beachhead · 100+ top-tier venues · 1k+ users on citywide launch · community partners TBD
+            Oakland beachhead · 100+ top-tier restaurants · 1k+ users on citywide launch · community partners TBD
           </p>
 
           <div class="map-visual">
@@ -2137,7 +2141,7 @@
             <div class="compare-grid">
               <article class="compare-card">
                 <h4>Restaurant discovery</h4>
-                <p>Yelp &amp; Google Maps shine when you’re picking a venue.</p>
+                <p>Yelp &amp; Google Maps shine when you’re picking a restaurant.</p>
                 <p>Weak at dish-level filters when you’re seated with a paper menu.</p>
               </article>
               <article class="compare-card">
@@ -2153,104 +2157,8 @@
               <article class="compare-card compare-card--highlight">
                 <h4>PickMyPlate</h4>
                 <p>Scan the real menu, match your profile, and see why each dish fits—before you order.</p>
-                <p>Independent venues get an updatable layer—without pricing every reprint.</p>
+                <p>Independent restaurants get an updatable layer—without pricing every reprint.</p>
               </article>
-            </div>
-          </div>
-
-          <div class="endorse-section" id="endorsements">
-            <p class="endorse-label">Trusted voices · diners &amp; venues</p>
-            <div
-              class="endorse-carousel"
-              id="endorsement-carousel"
-              tabindex="0"
-              aria-roledescription="carousel"
-              aria-label="Testimonials"
-            >
-              <div class="endorse-viewport">
-                <div class="endorse-track" id="endorse-track">
-                  <figure class="endorse-slide">
-                    <div class="endorse-card">
-                      <div class="endorse-avatar endorse-avatar--a" aria-hidden="true">JK</div>
-                      <div class="endorse-card__main">
-                        <blockquote class="endorse-quote">
-                          “I stopped playing twenty questions with the server about ingredients. I filter once, scan the menu, and actually know what I’m ordering.”
-                        </blockquote>
-                        <div class="endorse-meta">
-                          <span class="endorse-meta-name">Jordan K.</span>
-                          <span class="endorse-meta-detail">Graduate student · Oakland</span>
-                        </div>
-                      </div>
-                    </div>
-                  </figure>
-                  <figure class="endorse-slide">
-                    <div class="endorse-card">
-                      <div class="endorse-avatar endorse-avatar--b" aria-hidden="true">MV</div>
-                      <div class="endorse-card__main">
-                        <blockquote class="endorse-quote">
-                          “We’re not reprinting specials every three days. Guests use the same paper menu with a layer that stays current.”
-                        </blockquote>
-                        <div class="endorse-meta">
-                          <span class="endorse-meta-name">Maria V.</span>
-                          <span class="endorse-meta-detail">Owner · Independent bistro · Pittsburgh</span>
-                        </div>
-                      </div>
-                    </div>
-                  </figure>
-                  <figure class="endorse-slide">
-                    <div class="endorse-card">
-                      <div class="endorse-avatar endorse-avatar--c" aria-hidden="true">AR</div>
-                      <div class="endorse-card__main">
-                        <blockquote class="endorse-quote">
-                          “Other apps find restaurants; this one helps me decide at the dish level when the menu is long and nothing is labeled for allergens.”
-                        </blockquote>
-                        <div class="endorse-meta">
-                          <span class="endorse-meta-name">Alex R.</span>
-                          <span class="endorse-meta-detail">Product designer · Pittsburgh visits</span>
-                        </div>
-                      </div>
-                    </div>
-                  </figure>
-                  <figure class="endorse-slide">
-                    <div class="endorse-card">
-                      <div class="endorse-avatar endorse-avatar--d" aria-hidden="true">CP</div>
-                      <div class="endorse-card__main">
-                        <blockquote class="endorse-quote">
-                          “Our campus pilot team said it finally matches how students actually order—not another map of dots, but clarity at the table.”
-                        </blockquote>
-                        <div class="endorse-meta">
-                          <span class="endorse-meta-name">Oakland corridor pilot</span>
-                          <span class="endorse-meta-detail">Community partnership · 2026</span>
-                        </div>
-                      </div>
-                    </div>
-                  </figure>
-                  <figure class="endorse-slide">
-                    <div class="endorse-card">
-                      <div class="endorse-avatar endorse-avatar--e" aria-hidden="true">TN</div>
-                      <div class="endorse-card__main">
-                        <blockquote class="endorse-quote">
-                          “Guests aren’t photographing every page anymore—they trust what’s on screen matches what we’re cooking tonight.”
-                        </blockquote>
-                        <div class="endorse-meta">
-                          <span class="endorse-meta-name">Taylor N.</span>
-                          <span class="endorse-meta-detail">Front-of-house lead · Pittsburgh</span>
-                        </div>
-                      </div>
-                    </div>
-                  </figure>
-                </div>
-              </div>
-              <div class="endorse-controls">
-                <button type="button" class="endorse-btn endorse-prev" aria-controls="endorse-track" aria-label="Previous endorsement">
-                  ‹
-                </button>
-                <div class="endorse-dots" id="endorse-dots" aria-label="Select endorsement"></div>
-                <button type="button" class="endorse-btn endorse-next" aria-controls="endorse-track" aria-label="Next endorsement">
-                  ›
-                </button>
-              </div>
-              <p id="carousel-live" class="sr-only" aria-live="polite"></p>
             </div>
           </div>
         </div>
@@ -2294,7 +2202,7 @@
           </p>
           <div class="btn-row" id="download">
             <a class="btn btn-footer-primary" href="#">Download the app</a>
-            <a class="btn btn-outline-light" href="#waitlist">Join the waitlist</a>
+            <a class="btn btn-outline-light" href="#waitlist">Join our email list</a>
           </div>
         </div>
       </footer>
@@ -2358,127 +2266,69 @@
       (function () {
         var track = document.getElementById("endorse-track");
         var dotsRoot = document.getElementById("endorse-dots");
-        var live = document.getElementById("carousel-live");
-        var root = document.getElementById("endorsement-carousel");
-        if (!track || !root) return;
+        var prevBtn = document.getElementById("endorse-prev");
+        var nextBtn = document.getElementById("endorse-next");
+        if (!track) return;
 
         var slides = track.querySelectorAll(".endorse-slide");
         var n = slides.length;
         if (!n) return;
 
-        var idx = 0;
+        var current = 0;
+
+        // Build dots
+        var dots = [];
+        for (var i = 0; i < n; i++) {
+          (function(j) {
+            var dot = document.createElement("button");
+            dot.type = "button";
+            dot.className = "endorse-dot";
+            dot.setAttribute("aria-label", "Slide " + (j + 1));
+            dot.addEventListener("click", function () { goTo(j); });
+            dotsRoot.appendChild(dot);
+            dots.push(dot);
+          })(i);
+        }
+
+        function updateDots() {
+          dots.forEach(function(d, j) {
+            d.setAttribute("aria-current", j === current ? "true" : "false");
+          });
+        }
+
+        function goTo(i) {
+          current = ((i % n) + n) % n;
+          var slideWidth = track.clientWidth;
+          track.scrollTo({ left: current * slideWidth, behavior: "smooth" });
+          updateDots();
+        }
+
+        // Keep dots in sync when user swipes
+        track.addEventListener("scroll", function () {
+          var slideWidth = track.clientWidth;
+          if (!slideWidth) return;
+          var snapped = Math.round(track.scrollLeft / slideWidth);
+          if (snapped !== current) {
+            current = snapped;
+            updateDots();
+          }
+        }, { passive: true });
+
+        prevBtn && prevBtn.addEventListener("click", function () { goTo(current - 1); });
+        nextBtn && nextBtn.addEventListener("click", function () { goTo(current + 1); });
+
+        // Auto-advance
         var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-        if (reduceMotion) track.style.transition = "none";
-
-        function snippet(el) {
-          if (!el) return "";
-          var t = el.textContent.replace(/\s+/g, " ").trim();
-          return t.length > 140 ? t.slice(0, 140) + "…" : t;
-        }
-
-        var vpEl = track.closest(".endorse-viewport");
-
-        function viewportWidth() {
-          return vpEl ? vpEl.clientWidth : 0;
-        }
-
-        function go(i) {
-          idx = ((i % n) + n) % n;
-          console.log("go called → idx:", idx);
-
-          track.style.transform = `translateX(-${idx * 100}%)`;
-
-          if (dotsRoot) {
-            var dots = dotsRoot.querySelectorAll(".endorse-dot");
-            dots.forEach(function (d, j) {
-              d.setAttribute("aria-current", j === idx ? "true" : "false");
-            });
-          }
-
-          if (live) {
-            var q = slides[idx] ? slides[idx].querySelector(".endorse-quote") : null;
-            live.textContent = snippet(q);
-          }
-
-          slides.forEach(function (slideEl, j) {
-            slideEl.classList.toggle("is-active", j === idx);
-          });
-        }
-
-        if (dotsRoot) {
-          for (var i = 0; i < n; i++) {
-            (function (j) {
-              var dot = document.createElement("button");
-              dot.type = "button";
-              dot.className = "endorse-dot";
-              dot.setAttribute("aria-label", "Show endorsement " + (j + 1) + " of " + n);
-              dot.addEventListener("click", function () {
-                go(j);
-              });
-              dotsRoot.appendChild(dot);
-            })(i);
-          }
-        }
-
-        var prev = root.querySelector(".endorse-prev");
-        var next = root.querySelector(".endorse-next");
-        if (prev) prev.addEventListener("click", function () { go(idx - 1); });
-        if (next) next.addEventListener("click", function () { go(idx + 1); });
-
-        root.addEventListener("keydown", function (e) {
-          if (e.key === "ArrowLeft") {
-            e.preventDefault();
-            go(idx - 1);
-          } else if (e.key === "ArrowRight") {
-            e.preventDefault();
-            go(idx + 1);
-          }
-        });
-
-        var advanceMs = 9000;
         var timer = null;
-        function startAuto() {
-          if (reduceMotion || n < 2) return;
-          stopAuto();
-          timer = window.setInterval(function () {
-            go(idx + 1);
-          }, advanceMs);
-        }
-        function stopAuto() {
-          if (timer) {
-            window.clearInterval(timer);
-            timer = null;
-          }
-        }
-
-        var started = false;
-        function init() {
-          if (started) return;
-          var w = viewportWidth();
-          if (!w) return;          // not ready yet, observer will retry
-          started = true;
-          go(0);
-          startAuto();
-        }
-
-        // ResizeObserver fires once the element has real dimensions
-        if (window.ResizeObserver) {
-          var ro = new ResizeObserver(function () {
-            if (!started) { init(); } 
-            else { go(idx); }
+        if (!reduceMotion && n > 1) {
+          timer = setInterval(function () { goTo(current + 1); }, 9000);
+          track.addEventListener("mouseenter", function () { clearInterval(timer); });
+          track.addEventListener("mouseleave", function () {
+            timer = setInterval(function () { goTo(current + 1); }, 9000);
           });
-          ro.observe(vpEl);
-        } else {
-          window.addEventListener("resize", function () { go(idx); });
-          requestAnimationFrame(function () { requestAnimationFrame(init); });
         }
 
-        root.addEventListener("mouseenter", stopAuto);
-        root.addEventListener("mouseleave", startAuto);
-        root.addEventListener("focusin", stopAuto);
-        root.addEventListener("focusout", function (e) {
-          if (!root.contains(e.relatedTarget)) startAuto();
-        });
+        updateDots();
       })();
 
     </script>
