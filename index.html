@@ -1550,20 +1550,64 @@
 
       /* —— Footer CTA —— */
       .footer-cta {
+        position: relative;
+        overflow: hidden;
         background: var(--primary);
         color: var(--white);
         padding: var(--space-section) 0 2.5rem;
       }
 
+      .footer-cta::before {
+        content: "";
+        position: absolute;
+        inset: -25%;
+        pointer-events: none;
+        background: radial-gradient(
+            ellipse 55% 45% at 18% 22%,
+            rgba(233, 83, 3, 0.32) 0%,
+            transparent 62%
+          ),
+          radial-gradient(
+            ellipse 50% 42% at 82% 78%,
+            rgba(255, 106, 61, 0.2) 0%,
+            transparent 58%
+          ),
+          linear-gradient(
+            155deg,
+            rgba(233, 83, 3, 0.12) 0%,
+            transparent 48%,
+            rgba(255, 255, 255, 0.05) 100%
+          );
+        animation: footer-cta-bg 22s ease-in-out infinite alternate;
+      }
+
+      @keyframes footer-cta-bg {
+        0% {
+          transform: translate3d(-3%, -2%, 0) scale(1);
+        }
+        100% {
+          transform: translate3d(4%, 3%, 0) scale(1.06);
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .footer-cta::before {
+          animation: none;
+          transform: none;
+        }
+      }
+
       .footer-cta-inner {
+        position: relative;
+        z-index: 1;
         text-align: center;
-        max-width: 36rem;
+        max-width: 38rem;
         margin-inline: auto;
       }
 
       .footer-cta h2 {
         margin: 0;
-        font-size: clamp(1.75rem, 4vw, 2.25rem);
+        font-size: clamp(1.25rem, 4vw, 2.35rem);
         font-weight: 800;
         letter-spacing: -0.03em;
         line-height: 1.2;
@@ -1571,9 +1615,13 @@
 
       .footer-cta .fineprint {
         margin: 1rem 0 0;
-        font-size: 0.875rem;
-        color: rgba(255, 255, 255, 0.65);
-        line-height: 1.55;
+        font-size: 0.9375rem;
+        font-weight: 500;
+        color: rgba(255, 255, 255, 0.72);
+        line-height: 1.6;
+        max-width: 34rem;
+        margin-left: auto;
+        margin-right: auto;
       }
 
       .footer-cta .btn-row {
@@ -1582,6 +1630,33 @@
         gap: 1rem;
         justify-content: center;
         margin-top: 2rem;
+      }
+
+      /* Closing section only: accent as solid CTA (see global note in :root comment) */
+      .footer-cta .btn-footer-primary {
+        background: var(--accent);
+        color: var(--white);
+        border: 2px solid transparent;
+        box-shadow: 0 2px 16px rgba(233, 83, 3, 0.38);
+        transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease,
+          background 0.2s ease;
+      }
+
+      .footer-cta .btn-footer-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 28px rgba(233, 83, 3, 0.48);
+        filter: brightness(1.06);
+      }
+
+      .footer-cta .btn-outline-light {
+        transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease,
+          box-shadow 0.2s ease;
+      }
+
+      .footer-cta .btn-outline-light:hover {
+        transform: translateY(-2px);
+        border-color: rgba(255, 255, 255, 1);
+        box-shadow: 0 4px 18px rgba(0, 0, 0, 0.2);
       }
 
       @media (max-width: 480px) {
@@ -2159,11 +2234,13 @@
 
       <footer class="footer-cta" id="waitlist">
         <div class="container footer-cta-inner">
-          <h2>Ship the pilot. Earn the next plate.</h2>
-          <p class="fineprint">Replace waitlist text with link to photography, case talks, and brand video.</p>
+          <h2>Pick faster, stress less, and enjoy the plate you actually wanted.</h2>
+          <p class="fineprint">
+            Know what fits your diet, allergies, and taste—before you say a word to the server. 
+          </p>
           <div class="btn-row" id="download">
-            <a class="btn btn-light" href="#">Download app</a>
-            <a class="btn btn-outline-light" href="#waitlist">Join waitlist</a>
+            <a class="btn btn-footer-primary" href="#">Download the app</a>
+            <a class="btn btn-outline-light" href="#waitlist">Join the waitlist</a>
           </div>
         </div>
       </footer>
@@ -2325,21 +2402,29 @@
           }
         }
 
-        go(0);
-        window.addEventListener("resize", function () {
-          layoutSlideWidths();
-          go(idx);
-        });
-        if (document.fonts && document.fonts.ready) {
-          document.fonts.ready.then(function () {
-            go(idx);
-          });
+        var started = false;
+        function init() {
+          if (started) return;
+          var w = viewportWidth();
+          if (!w) return;          // not ready yet, observer will retry
+          started = true;
+          go(0);
+          startAuto();
         }
-        requestAnimationFrame(function () {
-          go(idx);
-        });
 
-        startAuto();
+        // ResizeObserver fires once the element has real dimensions
+        if (window.ResizeObserver) {
+          var ro = new ResizeObserver(function () {
+            layoutSlideWidths();
+            if (!started) { init(); } else { go(idx); }
+          });
+          ro.observe(vpEl);
+        } else {
+          // Fallback for old browsers
+          window.addEventListener("resize", function () { layoutSlideWidths(); go(idx); });
+          requestAnimationFrame(function () { requestAnimationFrame(init); });
+        }
+
         root.addEventListener("mouseenter", stopAuto);
         root.addEventListener("mouseleave", startAuto);
         root.addEventListener("focusin", stopAuto);
@@ -2347,6 +2432,7 @@
           if (!root.contains(e.relatedTarget)) startAuto();
         });
       })();
+
     </script>
   </body>
 </html>
