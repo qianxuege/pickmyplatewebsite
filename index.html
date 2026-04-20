@@ -1537,28 +1537,83 @@
 
       .member {
         text-align: left;
+        padding: 1rem;
+        margin: -1rem;
+        border-radius: 14px;
+        border: 1px solid transparent;
+        transition:
+          border-color 0.2s ease,
+          box-shadow 0.2s ease,
+          background 0.2s ease;
+      }
+
+      .member:hover {
+        border-color: var(--line);
+        background: rgba(248, 249, 250, 0.65);
+        box-shadow: 0 10px 28px rgba(3, 2, 19, 0.06);
       }
 
       .member-photo {
+        position: relative;
         aspect-ratio: 1;
-        background: var(--card);
-        border-radius: var(--radius-card);
+        border-radius: 12px;
         border: 1px solid var(--line);
-        margin-bottom: 1rem;
+        margin-bottom: 1.05rem;
+        overflow: hidden;
+        background: var(--card);
+      }
+
+      .member-photo img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center top;
+        display: block;
       }
 
       .member h3 {
-        margin: 0 0 0.5rem;
-        font-size: 1rem;
+        margin: 0 0 0.35rem;
+        font-size: 1.0625rem;
         font-weight: 700;
+        letter-spacing: -0.02em;
         color: var(--primary);
       }
 
-      .member p {
+      .member-role {
+        margin: 0 0 0.55rem;
+        font-size: 0.8125rem;
+        font-weight: 600;
+        line-height: 1.4;
+        color: var(--muted);
+      }
+
+      .member p.member-bio {
         margin: 0;
         font-size: 0.875rem;
         color: var(--ink-soft);
-        line-height: 1.6;
+        line-height: 1.62;
+      }
+
+      .member-linkedin {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        margin-top: 0.85rem;
+        font-size: 0.8125rem;
+        font-weight: 600;
+        color: var(--primary);
+        text-decoration: none;
+        letter-spacing: 0.01em;
+      }
+
+      .member-linkedin:hover {
+        color: var(--accent);
+      }
+
+      .member-linkedin:focus-visible {
+        outline: 2px solid var(--primary);
+        outline-offset: 3px;
+        border-radius: 4px;
       }
 
       @media (max-width: 900px) {
@@ -1697,7 +1752,7 @@
 
         <div class="nav-actions">
           <a class="btn btn-dark" href="#download">Download app</a>
-          <a class="link-quiet" href="#waitlist">Join email list</a>
+          <a class="link-quiet" href="#waitlist" data-email-signup>Join email list</a>
         </div>
 
         <button type="button" class="menu-toggle link-quiet" aria-expanded="false" aria-controls="mobile-menu" id="menu-btn">
@@ -1710,7 +1765,7 @@
           <a href="#oakland">Pittsburgh</a>
           <a href="#team">Team</a>
           <a class="btn btn-dark" href="#download">Download app</a>
-          <button type="button" class="link-quiet" data-scroll="#waitlist">Join email list</button>
+          <a class="link-quiet" href="#waitlist" data-email-signup>Join email list</a>
         </div>
       </div>
     </header>
@@ -2167,28 +2222,100 @@
       <section class="team" id="team">
         <div class="container">
           <div class="team-head">
-            <h2 class="section-title">Multidisciplinary crew with shipping muscle and local presence.</h2>
+            <h2 class="section-title">CMU-built team—product, engineering, and ops for Pittsburgh tables.</h2>
           </div>
           <div class="team-grid">
             <article class="member">
-              <div class="member-photo" aria-hidden="true"></div>
-              <h3>Name · Role</h3>
-              <p>CMU — short bio tailored to mission + customer audience.</p>
+              <div class="member-photo">
+                <img
+                  src="images/team/cici%20ge.png"
+                  alt="Portrait of Cici Ge."
+                  loading="lazy"
+                  decoding="async"
+                  width="400"
+                  height="400"
+                />
+              </div>
+              <h3>Cici Ge</h3>
+              <p class="member-role">Founder · Product designer · Engineer</p>
+              <p class="member-bio">
+                Third-year student in Information Systems with a minor in Artificial Intelligence.
+              </p>
+              <a
+                class="member-linkedin"
+                href="https://www.linkedin.com/in/cici-ge/"
+                target="_blank"
+                rel="noopener noreferrer"
+                >LinkedIn<span aria-hidden="true"> ↗</span></a>
             </article>
             <article class="member">
-              <div class="member-photo" aria-hidden="true"></div>
-              <h3>Name · Role</h3>
-              <p>CMU — short bio tailored to mission + customer audience.</p>
+              <div class="member-photo">
+                <img
+                  src="images/team/sofia_yu_2.png"
+                  alt="Portrait of Sofia Yu."
+                  loading="lazy"
+                  decoding="async"
+                  width="400"
+                  height="400"
+                />
+              </div>
+              <h3>Sofia Yu</h3>
+              <p class="member-role">Engineer · Operations</p>
+              <p class="member-bio">
+                Third-year student in Information Systems with a minor in Computer Science.
+              </p>
+              <a
+                class="member-linkedin"
+                href="https://www.linkedin.com/in/sofia-yu-86bba21b9/"
+                target="_blank"
+                rel="noopener noreferrer"
+                >LinkedIn<span aria-hidden="true"> ↗</span></a>
             </article>
             <article class="member">
-              <div class="member-photo" aria-hidden="true"></div>
-              <h3>Name · Role</h3>
-              <p>CMU — short bio tailored to mission + customer audience.</p>
+              <div class="member-photo">
+                <img
+                  src="images/team/yao%20lu.jpg"
+                  alt="Portrait of Yao Lu."
+                  loading="lazy"
+                  decoding="async"
+                  width="400"
+                  height="400"
+                />
+              </div>
+              <h3>Yao Lu</h3>
+              <p class="member-role">Senior engineer · Tech lead</p>
+              <p class="member-bio">
+                Master’s student at the Information Networking Institute; incoming Software Development Engineer at Amazon.
+              </p>
+              <a
+                class="member-linkedin"
+                href="https://www.linkedin.com/in/yao-lu-84271a323/"
+                target="_blank"
+                rel="noopener noreferrer"
+                >LinkedIn<span aria-hidden="true"> ↗</span></a>
             </article>
             <article class="member">
-              <div class="member-photo" aria-hidden="true"></div>
-              <h3>Name · Role</h3>
-              <p>CMU — short bio tailored to mission + customer audience.</p>
+              <div class="member-photo">
+                <img
+                  src="images/team/yano%20li.jpg"
+                  alt="Portrait of Yano Li."
+                  loading="lazy"
+                  decoding="async"
+                  width="400"
+                  height="400"
+                />
+              </div>
+              <h3>Yano Li</h3>
+              <p class="member-role">Engineer · Marketing</p>
+              <p class="member-bio">
+                Third-year student in Computer Science and Architecture (BCSA) at Carnegie Mellon University.
+              </p>
+              <a
+                class="member-linkedin"
+                href="https://www.linkedin.com/in/sui-yeung-li-15a28533b/"
+                target="_blank"
+                rel="noopener noreferrer"
+                >LinkedIn<span aria-hidden="true"> ↗</span></a>
             </article>
           </div>
         </div>
@@ -2202,7 +2329,7 @@
           </p>
           <div class="btn-row" id="download">
             <a class="btn btn-footer-primary" href="#">Download the app</a>
-            <a class="btn btn-outline-light" href="#waitlist">Join our email list</a>
+            <a class="btn btn-outline-light" href="#waitlist" data-email-signup>Join our email list</a>
           </div>
         </div>
       </footer>
@@ -2220,6 +2347,19 @@
     </main>
 
     <script>
+      /** After you publish the Google Form, paste the “view” link here (ends in /viewform or forms.gle/…). */
+      var PICKMYPLATE_EMAIL_LIST_FORM_URL = "https://forms.gle/R9xjcTGtbcS6UwjV7";
+
+      (function () {
+        if (PICKMYPLATE_EMAIL_LIST_FORM_URL) {
+          document.querySelectorAll("[data-email-signup]").forEach(function (a) {
+            a.href = PICKMYPLATE_EMAIL_LIST_FORM_URL;
+            a.target = "_blank";
+            a.rel = "noopener noreferrer";
+          });
+        }
+      })();
+
       (function () {
         var nav = document.getElementById("site-nav");
         var btn = document.getElementById("menu-btn");
@@ -2245,17 +2385,11 @@
             });
           });
 
-          var waitBtn = panel.querySelector("[data-scroll]");
-          if (waitBtn) {
-            waitBtn.addEventListener("click", function () {
-              var id = waitBtn.getAttribute("data-scroll");
+          panel.querySelectorAll("[data-email-signup]").forEach(function (link) {
+            link.addEventListener("click", function () {
               setOpen(false);
-              if (id) {
-                var el = document.querySelector(id);
-                if (el) el.scrollIntoView({ behavior: "smooth" });
-              }
             });
-          }
+          });
         }
 
         document.addEventListener("keydown", function (e) {
