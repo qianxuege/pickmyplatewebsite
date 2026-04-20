@@ -54,6 +54,7 @@
 
       html {
         scroll-behavior: smooth;
+        scroll-padding-top: calc(var(--header-height) + 0.5rem);
         width: 100%;
         margin: 0;
         padding: 0;
@@ -87,8 +88,7 @@
       */
       .site-header,
       main > section,
-      footer.footer-cta,
-      .footer-bar {
+      footer.site-footer {
         width: 100%;
         max-width: 100%;
         margin-left: 0;
@@ -2188,114 +2188,64 @@
         }
       }
 
-      /* —— Footer CTA —— */
-      .footer-cta {
+      /* —— Site footer —— */
+      .site-footer {
+        position: relative;
         background: var(--primary);
-        color: var(--white);
-        padding: var(--space-section) 0 2.5rem;
-        width: 100%;
+        color: rgba(255, 255, 255, 0.92);
+        padding: clamp(2.75rem, 6vw, 3.0rem) 0 clamp(2rem, 4vw, 2.05rem);
       }
 
-      .footer-cta-inner {
-        text-align: center;
-        max-width: 38rem;
-        margin-inline: auto;
-      }
-
-      .footer-cta h2 {
-        margin: 0;
-        font-size: clamp(1.25rem, 4vw, 2.35rem);
-        font-weight: 800;
-        letter-spacing: -0.03em;
-        line-height: 1.2;
-      }
-
-      .footer-cta .fineprint {
-        margin: 1rem 0 0;
-        font-size: 0.9375rem;
-        font-weight: 500;
-        color: rgba(255, 255, 255, 0.72);
-        line-height: 1.6;
-        max-width: 34rem;
+      .site-footer::before {
+        content: "";
+        display: block;
+        height: 2px;
+        margin-bottom: clamp(2rem, 5vw, 3rem);
         margin-left: auto;
         margin-right: auto;
+        width: min(160px, 42%);
+        border-radius: 999px;
+        /* background: linear-gradient(90deg, transparent, rgba(233, 83, 3, 0.42), transparent); */
       }
 
-      .footer-cta .btn-row {
+      .site-footer-inner {
         display: flex;
-        flex-wrap: wrap;
-        gap: 1rem;
-        justify-content: center;
-        margin-top: 2rem;
-      }
-
-      /* Closing section only: accent as solid CTA (see global note in :root comment) */
-      .footer-cta .btn-footer-primary {
-        background: var(--accent);
-        color: var(--white);
-        border: 2px solid transparent;
-        box-shadow: 0 2px 16px rgba(233, 83, 3, 0.38);
-        transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease,
-          background 0.2s ease;
-      }
-
-      .footer-cta .btn-footer-primary:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 28px rgba(233, 83, 3, 0.48);
-        filter: brightness(1.06);
-      }
-
-      .footer-cta .btn-outline-light {
-        transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease,
-          box-shadow 0.2s ease;
-      }
-
-      .footer-cta .btn-outline-light:hover {
-        transform: translateY(-2px);
-        border-color: rgba(255, 255, 255, 1);
-        box-shadow: 0 4px 18px rgba(0, 0, 0, 0.2);
-      }
-
-      @media (max-width: 480px) {
-        .footer-cta .btn-row {
-          flex-direction: column;
-        }
-
-        .footer-cta .btn-row .btn {
-          width: 100%;
-        }
-      }
-
-      .footer-bar {
-        padding: 1.25rem 0 2rem;
-        background: var(--primary);
-        border-top: 1px solid rgba(255, 255, 255, 0.12);
-      }
-
-      .footer-bar .container {
-        display: flex;
-        flex-wrap: wrap;
+        flex-direction: column;
         align-items: center;
-        justify-content: space-between;
+        text-align: center;
         gap: 1rem;
+      }
+
+      .site-footer-wordmark {
+        margin: 0;
+        font-size: 1.125rem;
+        font-weight: 800;
+        letter-spacing: -0.04em;
+        color: var(--white);
+      }
+
+      .site-footer-tagline {
+        margin: 0;
+        max-width: 35rem;
         font-size: 0.8125rem;
-        color: rgba(255, 255, 255, 0.45);
+        font-weight: 500;
+        line-height: 1.55;
+        letter-spacing: 0.01em;
+        color: rgba(255, 255, 255, 0.52);
       }
 
-      .footer-bar a {
-        color: rgba(255, 255, 255, 0.55);
-        text-decoration: none;
-      }
-
-      .footer-bar a:hover {
-        color: rgba(255, 255, 255, 0.85);
-        text-decoration: underline;
-      }
-
-      .footer-links {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 1rem 1.5rem;
+      .site-footer-meta {
+        margin: 0.85rem 0 0;
+        padding-top: 1.35rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.12);
+        width: 100%;
+        max-width: min(var(--max), calc(100% - 48px));
+        margin-left: auto;
+        margin-right: auto;
+        font-size: 0.75rem;
+        font-weight: 500;
+        letter-spacing: 0.06em;
+        color: rgba(255, 255, 255, 0.42);
       }
     </style>
   </head>
@@ -2305,8 +2255,8 @@
         <a class="logo" href="#">PickMyPlate</a>
 
         <nav class="nav-center" aria-label="Primary">
-          <a href="#diners">Diners</a>
-          <a href="#restaurants">Diners &amp; Restaurants</a>
+          <a href="#diners">Today's menus</a>
+          <a href="#restaurants">How it works</a>
           <a href="#oakland">Pittsburgh</a>
           <a href="#team">Team</a>
         </nav>
@@ -2321,8 +2271,8 @@
         </button>
 
         <div class="nav-mobile" id="mobile-menu" hidden>
-          <a href="#diners">Diners</a>
-          <a href="#restaurants">Diners &amp; Restaurants</a>
+          <a href="#diners">Today's menus</a>
+          <a href="#restaurants">How it works</a>
           <a href="#oakland">Pittsburgh</a>
           <a href="#team">Team</a>
           <a class="btn btn-dark" href="#download">Download app</a>
@@ -3138,29 +3088,17 @@
       </section>
     </main>
 
-    <footer class="footer-cta" id="waitlist">
-      <div class="container footer-cta-inner">
-        <h2>Pick faster, stress less, and enjoy the plate you actually wanted.</h2>
-        <p class="fineprint">
-          Know what fits your diet, allergies, and taste—before you say a word to the server. 
+    <footer class="site-footer" id="waitlist">
+      <div class="container site-footer-inner">
+        <!-- <p class="site-footer-wordmark">PickMyPlate</p> -->
+        <p class="site-footer-tagline">
+          Pittsburgh-built · Confidence at the table—from the menu in your hands.
         </p>
-        <div class="btn-row">
-          <a class="btn btn-footer-primary" href="#download">Get the app</a>
-          <a class="btn btn-outline-light" href="#waitlist" data-email-signup>Join our email list</a>
-        </div>
+        <p class="site-footer-meta">
+          © <span id="year"></span> PickMyPlate · Pittsburgh, PA
+        </p>
       </div>
     </footer>
-
-    <div class="footer-bar">
-      <div class="container">
-        <span>© <span id="year"></span> PickMyPlate · Pittsburgh, PA</span>
-        <nav class="footer-links" aria-label="Legal">
-          <a href="#">Contact</a>
-          <a href="#">Privacy</a>
-          <a href="#">Terms</a>
-        </nav>
-      </div>
-    </div>
 
     <script
       src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
